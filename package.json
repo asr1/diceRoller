@@ -1,0 +1,15 @@
+{
+  "name": "dice",
+  "version": "1.0.0",
+  "description": "Dice vizualization desktop app",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Alex Rinehart",
+  "license": "MIT",
+  "dependencies": {
+    "d3": "^5.4.0",
+    "electron": "^2.0.2"
+  }
+}
