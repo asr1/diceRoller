@@ -142,7 +142,7 @@ function type(d) {
         rollscount = [];
 
         //Prefill with 0s to prevent a bug where it can't differentiate between the number n and the nth element, which may move.
-        for(var i = 0; i < param.diceSize; i++)
+        for(var i = 0; i < param.diceSize * param.numDice; i++)
         {
             rollscount.push({"sum": i+1, "amount": 0})
         }
@@ -208,6 +208,22 @@ function type(d) {
         }
         return sum;
     }
+
+    //Takes an array of {amount, sum} and removes the left and right values that have 0 sums
+    //Rather, removes the left and right values lower than the theoretical min and higher
+    //Than the theoretical max
+    function trimArray(arr, therLow, therHigh)
+    {
+        //Should be no need to trim high.
+        //Do the max first so we don't change the array stressful
+        var elementsAboveMax = arr.length - therHigh;
+        //arr.splice()
+        arr.splice(0,therLow-1);
+        
+
+        return arr;
+    }
+
 
     function rollDie(size){
         return Math.floor(Math.random() * size) + 1;
