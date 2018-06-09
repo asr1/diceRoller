@@ -15,6 +15,18 @@
         font: 10px sans-serif;
         text-anchor: end;
         }
+
+        .axisRed line{
+        stroke: black;
+        }
+
+        .axisRed path{
+        stroke: black;
+        }
+
+        .axisRed text{
+        fill: black;
+        }  
     </style>
 
 </head>
@@ -40,6 +52,8 @@
     const electron = require('electron');
     const {ipcRenderer} = electron;
     var d3 = require("d3");
+    let mostRecent = document.getElementsByClassName("chart");
+
     const sum = document.getElementById('sum');
     const avg = document.getElementById('avg');
     const std = document.getElementById('std');
@@ -48,12 +62,14 @@
     //Catch roll dice
     ipcRenderer.on('roll', (e, param) => {
         var values = roll(param);
-        console.log("going");
+        console.log(values);
         drawGraph(values);
     });
 
     //Clear history
     ipcRenderer.on('clearHistory', () => {
+        
+        mostRecent.innerHTML = "";
         ul.innerHTML = '';
         sum.innerHTML = '';
         std.innerHTML = '';
@@ -62,35 +78,57 @@
 
     function drawGraph(data)
     {
-        var width = 400,
-        height = 400;
-
+        // set the dimensions and margins of the graph
+        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 400 - margin.left - margin.right,
+        height = 150 - margin.top - margin.bottom;
+        
+        // set the ranges
+        var x = d3.scaleBand()
+                .range([0, width])
+                .padding(0.1);
         var y = d3.scaleLinear()
-            .range([height, 0]);
+                .range([height, 0]);
 
-        var chart = d3.select(".chart")
-            .attr("width", width)
-            .attr("height", height);
+        var svg = d3.select(".chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", 
+                "translate(" + margin.left + "," + margin.top + ")");
+                y.domain([0, d3.max(data, function(d) { return d })])
+        mostRecent = svg;
 
-        y.domain([0, d3.max(data, function(d) { return d })])
+          // format the data
+            data.forEach(function(d) {
+                d.amount = +d.amount;
+                d.sum = "" + d.sum;
+            });
 
-         var barWidth = width / data.length;
+        // Scale the range of the data in the domains
+        x.domain(data.map(function(d) { return d.sum; }));
+        y.domain([0, d3.max(data, function(d) { return d.amount; })]);
 
-        var bar = chart.selectAll("g")
-      .data(data)
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+        // append the rectangles for the bar chart
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.sum); })
+            .attr("width", x.bandwidth())
+            .attr("y", function(d) { return y(d.amount); })
+            .attr("height", function(d) { return height - y(d.amount); });
 
-  bar.append("rect")
-      .attr("y", function(d) { return y(d); })
-      .attr("height", function(d) { return height - y(d); })
-      .attr("width", barWidth - 1);
+        // add the x Axis
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "axisRed")
+            .call(d3.axisBottom(x));
 
-  bar.append("text")
-      .attr("x", barWidth / 2)
-      .attr("y", function(d) { return y(d) + 3; })
-      .attr("dy", ".75em")
-      .text(function(d) { return d; });
+        // add the y Axis
+        svg.append("g")
+            .attr("class", "axisRed")
+            .call(d3.axisLeft(y)); 
 };
 
 function type(d) {
@@ -102,6 +140,15 @@ function type(d) {
     {
         rolls = [];
         rollscount = [];
+
+        //Prefill with 0s to prevent a bug where it can't differentiate between the number n and the nth element, which may move.
+        for(var i = 0; i < param.diceSize; i++)
+        {
+            rollscount.push({"sum": i+1, "amount": 0})
+        }
+
+        console.log( "inital")
+        console.log(rollscount);
        // console.log(param)
        // console.log(param.numTrials);
        // console.log(param.diceSize);
@@ -119,13 +166,13 @@ function type(d) {
             ul.appendChild(li);
 
             rolls.push(roll);
-            rollscount[roll] !== undefined ? rollscount[roll]++ : rollscount[roll] = 0;
+            rollscount[roll-1].amount++; //arrays start at 0, sums start at 1
             rollSum += roll;
         }
         sum.innerHTML = rollSum;
         avg.innerHTML = rollSum/param.numTrials;
         std.innerHTML = Math.round(rolls.stanDeviate() * 100) / 100;
-        console.log(rollscount)
+
         return rollscount;
         
       //numTrials, numDice, diceSize, addEach, addTotal, reRolls
