@@ -1,5 +1,5 @@
 module.exports = class Parameter {
-    constructor(numTrials, numDice, diceSize, addEach, addTotal, reRolls)
+    constructor(numTrials, numDice, diceSize, addEach, addTotal, reRolls, therMin, therMax)
     {
         this.numTrials = numTrials;
         this.numDice = numDice;
@@ -7,5 +7,7 @@ module.exports = class Parameter {
         this.addEach = addEach;
         this.addTotal = addTotal;
         this.reRolls = reRolls;
+        this.therMin = therMin;
+        this.therMax = therMax;
     }
 }

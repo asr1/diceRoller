@@ -1,8 +1,9 @@
-Add theoretical max/min , average (generating a number between 3 and 150, averaging 30)
+\#Add theoretical max/min , 
+	average (generating a number between 3 and 150, averaging 30)
 add NLP: You are rolling 3(d6 + 1) + 3 100 times.
 	^ use angular for this?
-		move thermax, therlow out of mainwindow logic
-			count rerolls in min
+\#		move thermax, therlow out of mainwindow logic
+\#			count rerolls in min
 \#fix graph https://bost.ocks.org/mike/bar/3/
 	and add line to graph
 	\#space the graph out more (if we do 10d6 the numbers overlap)
@@ -19,3 +20,6 @@ clean up file structure
 add input validation
 change to typescript
 bind escape to close newDice
+add a pure theoretical mode where we simulate every possibilty
+maybe a toggle "theoretical / simulated"
+and maybe different color schemes

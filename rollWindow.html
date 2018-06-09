@@ -102,7 +102,25 @@
             let reRollText = document.querySelector('#reroll').value;
             reRolls = rerollTextToArray(reRollText);
 
-            const param = new Parameter(numTrials, numDice, dieSize, addEach, addAll, reRolls);
+            //Determine theoretical min and max
+            let diePoss = []; //Possible die results
+            for(var i = 1; i <= dieSize; i++)
+            {
+                if(!reRolls.includes(i))
+                {
+                    diePoss.push(i);
+                }
+            }
+            var minPoss = diePoss[0];
+            var maxPoss = diePoss[diePoss.length-1];
+
+            minPoss += addEach;
+            maxPoss += addEach;
+
+            var therMin = minPoss * numDice + addAll;
+            var therMax = maxPoss * numDice + addAll;
+
+            const param = new Parameter(numTrials, numDice, dieSize, addEach, addAll, reRolls, therMin, therMax);
             ipcRenderer.send('roll', param);
         }
 

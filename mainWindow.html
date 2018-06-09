@@ -142,8 +142,7 @@ function type(d) {
         rollscount = [];
 
         //Prefill with 0s to prevent a bug where it can't differentiate between the number n and the nth element, which may move.
-        var therMax = param.diceSize * param.numDice + param.numDice * param.addEach + param.addTotal //TODO calculate in rollwindow for NLP
-        for(var i = 0; i < therMax; i++)
+        for(var i = 0; i < param.therMax; i++)
         {
             rollscount.push({"sum": i+1, "amount": 0})
         }
@@ -173,10 +172,10 @@ function type(d) {
         sum.innerHTML = rollSum;
         avg.innerHTML = rollSum/param.numTrials;
         std.innerHTML = Math.round(rolls.stanDeviate() * 100) / 100;
-        trimArray(rollscount, param);
+        trimArray(rollscount, param.therMin);
         return rollscount;
         
-      //numTrials, numDice, diceSize, addEach, addTotal, reRolls
+      //numTrials, numDice, diceSize, addEach, addTotal, reRolls, therMin, therMax
     }
 
         Array.prototype.stanDeviate = function(){
@@ -211,11 +210,8 @@ function type(d) {
     }
 
     //Takes an array of {amount, sum} and removes removes the left values lower than the theoretical min 
-    function trimArray(arr, param)
+    function trimArray(arr, therLow)
     {
-        //TODO calculate this in the rolldice window and pass it as a param element
-        var therLow = param.numDice + param.numDice * param.addEach + param.addTotal;
-
         arr.splice(0,therLow-1);
         return arr;
     }
