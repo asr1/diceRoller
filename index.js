@@ -56,7 +56,6 @@ function createRollWindow()
 ipcMain.on('roll', (e, param) => {
     mainWindow.webContents.send('roll', param);
     rollWindow.close();
-    console.log(param)
 })
 
 //catch clear

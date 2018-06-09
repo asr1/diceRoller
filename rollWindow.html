@@ -30,29 +30,44 @@
             }
             </style>
 
+            <script>
+                var angular = require('angular');
+                var app = angular.module('DiceRoller', []);
+                app.controller('diceCtrl', function($scope, $http){
+                    $scope.numTrials = 100;
+                    $scope.numDice = 1;
+                    $scope.dieSize = 6;
+                    $scope.addEach = 0;
+                    $scope.addAll = 0;
+
+
+
+                });
+            </script>
+
 </head>
-<body>
+<body ng-app="DiceRoller" ng-controller="diceCtrl">
     <div class="container">
         <form >
             <div>
                 <label>Num trials</label>
-                <input type="number" id="numtrials" value=100 autofocus>
+                <input type="number" ng-model="numTrials" id="numtrials" value=100 autofocus>
             </div>
             <div>
                 <label>Num dice to roll</label>
-                <input type="number" id="numdice" value=1 autofocus>
+                <input type="number" ng-model="numDice" id="numdice" value=1 autofocus>
             </div>
             <div>
                 <label># of sides per die</label>
-                <input type="number" id="diesize" value=6 autofocus>
+                <input type="number" ng-model="dieSize" id="diesize" value=6 autofocus>
             </div>
             <div>
                 <label>Add to each</label>
-                <input type="number" id="addeach" value=0 autofocus>
+                <input type="number" ng-model="addEach" id="addeach" value=0 autofocus>
             </div>
             <div>
                 <label>add to all</label>
-                <input type="number" id="addall" value=0 autofocus>
+                <input type="number" ng-model="addAll" id="addall" value=0 autofocus>
             </div>
             <div>
                 <label>Rerolls</label>    <span class="tooltip">help
@@ -64,7 +79,7 @@
             </div>
 
             <span>
-                You are rolling
+                You are rolling {{numDice}}d{{dieSize}}
                 <span id="spanNumDice">
 
                 </span>
@@ -74,6 +89,7 @@
         </form>
     </div>
     <script>
+
         const electron = require('electron');
         const {ipcRenderer} = electron;
         const Parameter = require('./RollParams');
@@ -92,6 +108,7 @@
         function submitForm(e){
             e.preventDefault();
 
+            //TODO use angular binding instead
             const numTrials = ~~document.querySelector('#numtrials').value;
             const numDice =   ~~document.querySelector('#numdice').value;
             const dieSize =   ~~document.querySelector('#diesize').value;
