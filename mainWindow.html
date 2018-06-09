@@ -80,7 +80,7 @@
     {
         // set the dimensions and margins of the graph
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 400 - margin.left - margin.right,
+        width = 600 - margin.left - margin.right,
         height = 150 - margin.top - margin.bottom;
         
         // set the ranges
@@ -142,7 +142,8 @@ function type(d) {
         rollscount = [];
 
         //Prefill with 0s to prevent a bug where it can't differentiate between the number n and the nth element, which may move.
-        for(var i = 0; i < param.diceSize * param.numDice; i++)
+        var therMax = param.diceSize * param.numDice + param.numDice * param.addEach + param.addTotal //TODO calculate in rollwindow for NLP
+        for(var i = 0; i < therMax; i++)
         {
             rollscount.push({"sum": i+1, "amount": 0})
         }
@@ -172,7 +173,7 @@ function type(d) {
         sum.innerHTML = rollSum;
         avg.innerHTML = rollSum/param.numTrials;
         std.innerHTML = Math.round(rolls.stanDeviate() * 100) / 100;
-
+        trimArray(rollscount, param);
         return rollscount;
         
       //numTrials, numDice, diceSize, addEach, addTotal, reRolls
@@ -209,18 +210,13 @@ function type(d) {
         return sum;
     }
 
-    //Takes an array of {amount, sum} and removes the left and right values that have 0 sums
-    //Rather, removes the left and right values lower than the theoretical min and higher
-    //Than the theoretical max
-    function trimArray(arr, therLow, therHigh)
+    //Takes an array of {amount, sum} and removes removes the left values lower than the theoretical min 
+    function trimArray(arr, param)
     {
-        //Should be no need to trim high.
-        //Do the max first so we don't change the array stressful
-        var elementsAboveMax = arr.length - therHigh;
-        //arr.splice()
-        arr.splice(0,therLow-1);
-        
+        //TODO calculate this in the rolldice window and pass it as a param element
+        var therLow = param.numDice + param.numDice * param.addEach + param.addTotal;
 
+        arr.splice(0,therLow-1);
         return arr;
     }
 
