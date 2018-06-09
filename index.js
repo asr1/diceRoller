@@ -35,7 +35,7 @@ function createRollWindow()
 {
    rollWindow = new BrowserWindow({
        width: 600,
-       height: 400,
+       height: 600,
        title: "Add new roll"
    });
 

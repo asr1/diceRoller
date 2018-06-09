@@ -2,10 +2,11 @@ Add theoretical max/min , average (generating a number between 3 and 150, averag
 fix graph https://bost.ocks.org/mike/bar/3/
 	and add line to graph
 \#push to github
+Add history to graphs
 add multiply total, multiply each
 	Add by  [constant/dropdown] and (d)[#]
 add NLP: You are rolling 3(d6 + 1) + 3 100 times.
-	^ use angular for this. https://angularfirebase.com/lessons/desktop-apps-with-electron-and-angular/
+	^ use angular for this. 
 clean up file structure
 Add history
 Clean up UI
