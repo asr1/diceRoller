@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
     <title>Dice Roller</title>
 
     <style>
@@ -18,7 +19,11 @@
 
 </head>
 <body>
-    <h1>Dice Roller</h1>
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo center">Dice Roller</a>
+        </div>
+    </nav>
     <svg class="chart"></svg>
     <div>
         <div>Stats</div>
@@ -97,7 +102,9 @@
             roll += param.addTotal;
 
             const li = document.createElement('li');
+            li.className = 'collection-item';
             const itemText = document.createTextNode(roll);
+            ul.className = 'collection';
             li.appendChild(itemText);
             ul.appendChild(li);
 
