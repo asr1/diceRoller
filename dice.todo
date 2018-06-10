@@ -31,5 +31,6 @@ add TSlint
 add a pure theoretical mode where we simulate every possibilty
 	maybe a toggle "theoretical / simulated"
 	and maybe different color schemes
+exploding d6 (or any die)
 add preferences window "close rollWindow after rolling?"
 Make graph responsive?
