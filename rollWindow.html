@@ -61,6 +61,9 @@
 
                         $scope.therMin = minPoss * $scope.numDice + $scope.addAll;
                         $scope.therMax = maxPoss * $scope.numDice + $scope.addAll;
+
+                        $scope.totalAdd = $scope.numDice * $scope.addEach + $scope.addAll;
+
                     });
 
                     $scope.$watch('reRollsText', ()=>
@@ -116,11 +119,11 @@
                 <span ng-if="addAll > 0">+</span>
                 <span ng-if="addAll != 0">{{addAll}}</span> 
                 {{numTrials}} times.
+                <div ng-if="addEach != 0">This is equivalent to {{numDice}}d{{dieSize}}<span ng-if="totalAdd > 0">+</span>{{totalAdd}}</div>
                 <div></div>
                 Resulting in a min of {{therMin}} a max of {{therMax}} and an average of {{(therMin + therMax) /2}}.
-                <span id="spanNumDice">
-
-                </span>
+               
+                
             </div>
             <button class='btn waves-effect waves-light' type="submit">Roll!</button>
             <button class='btn waves-effect waves-light' id="clear">Clear</button>
