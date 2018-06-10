@@ -11,6 +11,7 @@
 \#		range should go from ~400 to ~600.
 \#	label axes
 \#push to github
+make the height scale as well, per the numTrials
 Add history to graphs
 Add history to commands
 add multiply total, multiply each
@@ -21,9 +22,10 @@ add input validation
 change to typescript
 \#bind escape to close newDice
 add a pure theoretical mode where we simulate every possibilty
-maybe a toggle "theoretical / simulated"
-and maybe different color schemes
+	maybe a toggle "theoretical / simulated"
+	and maybe different color schemes
 add preferences window "close rollWindow after rolling?"
 \#Remove duplicate logic in rollWindow
 Make graph responsive?
 add another die (like + nd8)
+fix rerolls in NLP
