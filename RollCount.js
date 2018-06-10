@@ -14,4 +14,10 @@ module.exports = class RollCount {
     {
         this.count[roll-1].amount++; //arrays start at 0, sums start at 1
     }
+
+    //Removes the left values lower than the theoretical min 
+    trim(therMin)
+    {
+        this.count.splice(0,therMin-1);
+    }
 }

@@ -167,7 +167,7 @@ function type(d) {
         sum.innerHTML = rollSum;
         avg.innerHTML = rollSum/param.numTrials;
         std.innerHTML = Math.round(rolls.stanDeviate() * 100) / 100;
-        trimArray(rollscount.count, param.therMin);
+        rollscount.trim(param.therMin);
         return rollscount.count;
         
       //numTrials, numDice, diceSize, addEach, addTotal, reRolls, therMin, therMax
@@ -198,13 +198,6 @@ function type(d) {
             sum += roll
         }
         return sum;
-    }
-
-    //Takes an array of {amount, sum} and removes removes the left values lower than the theoretical min 
-    function trimArray(arr, therMin)
-    {
-        arr.splice(0,therMin-1);
-        return arr;
     }
 
 

@@ -166,6 +166,7 @@
         }
 
 
+        //TODO fix for numDice > 2
         function rollTherDice(numSides, numDice, max)
         {
             let dice = []; //Any array of all possible dice.
@@ -194,10 +195,32 @@
                     }
                 }
             }
-            console.log( results.count)
+            //todo trim results (need termin)
+            console.log( results.count);
 
 
         }
+
+        function callMeMany(numDice, numSides, func){
+            doCallMany(numDice, numSides, func)
+        }
+
+        function doCallMany(numDice, numSides, sumFunc)
+        {
+           if(numDice == 0) 
+           {
+               sumfunc(args)
+           }
+           else
+           {
+               for(let i = 0; i < numSides; i++)
+               {
+                doCallMany(numDice--, sumFunc, args)
+               }
+           }
+        }
+
+        callMeMany()
 
     </script>
 </body>
