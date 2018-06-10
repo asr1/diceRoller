@@ -45,7 +45,7 @@ function createRollWindow()
         pathname: path.join(__dirname, 'rollWindow.html')
     }));
 
-    const RollMenu = Menu.buildFromTemplate(RollMenuTemplate);
+    const RollMenu = Menu.buildFromTemplate(rollMenuTemplate);
     rollWindow.setMenu(RollMenu);
 
     //Handle garbage collection
@@ -97,7 +97,7 @@ const mainMenuTemplate = [
 ];
 
 // Create menu template
-const RollMenuTemplate = [
+const rollMenuTemplate = [
     {
         label: 'File',
         submenu: [
@@ -121,7 +121,7 @@ if(process.platform == 'darwin')
 //Add developer tools item if not in production
 if(process.env.NODE_ENV !== 'production')
 {
-    mainMenuTemplate.push({
+    const devToolMenu = {
         label: 'Developer Tools',
         submenu: [
             {
@@ -135,5 +135,7 @@ if(process.env.NODE_ENV !== 'production')
                 role: 'reload'
             }
         ]
-    })
+    };
+    mainMenuTemplate.push(devToolMenu);
+    rollMenuTemplate.push(devToolMenu);
 }
