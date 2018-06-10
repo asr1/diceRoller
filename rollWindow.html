@@ -148,7 +148,13 @@
         {
             e.preventDefault();
             var scope = angular.element(document.querySelector('[ng-controller="diceCtrl"]')).scope();
-            rollTherDice(scope.dieSize, scope.numDice, scope.therMax);
+            let dice = [];
+            for(let i = 0; i < scope.numDice; i++)
+            {
+                dice.push(scope.dieSize); 
+            }
+            amt = new RollCount(scope.therMax);
+            console.log(sums(dice, 0, amt));
         }
 
         function clear(e)
@@ -165,62 +171,16 @@
             ipcRenderer.send('roll', param);
         }
 
-
-        //TODO fix for numDice > 2
-        function rollTherDice(numSides, numDice, max)
-        {
-            let dice = []; //Any array of all possible dice.
-            let sides = [];
-            let totalPos = numSides ** numDice;
-            let results = new RollCount(max)
-
-            for(let i = 1; i <= numSides; i++)
-            {
-                sides.push(i);
-            }
-            console.log(sides)
-            
-            for(let i = 0; i < numDice; i++)
-            {
-                dice.push(sides); 
-            }
-            
-            for(let i = 0; i < numSides; i++)
-            {
-                for(let j = 1; j < dice.length; j++)
-                {
-                    for(let k = 0; k < numSides; k++)
-                    {
-                        results.add(dice[0][i] + dice[j][k]);
-                    }
+        function sums(dice, sum, ans) {
+            if (dice.length === 0) ans.add(sum) // edge case, no more dice
+            else {
+                let d = dice[0]
+                for (let i = 1; i <= d; i++) {
+                sums(dice.slice(1), sum + i, ans) // recurse with remaining dice
                 }
-            }
-            //todo trim results (need termin)
-            console.log( results.count);
-
-
+                    return ans;
+                }
         }
-
-        function callMeMany(numDice, numSides, func){
-            doCallMany(numDice, numSides, func)
-        }
-
-        function doCallMany(numDice, numSides, sumFunc)
-        {
-           if(numDice == 0) 
-           {
-               sumfunc(args)
-           }
-           else
-           {
-               for(let i = 0; i < numSides; i++)
-               {
-                doCallMany(numDice--, sumFunc, args)
-               }
-           }
-        }
-
-        callMeMany()
 
     </script>
 </body>
