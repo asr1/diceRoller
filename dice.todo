@@ -24,4 +24,4 @@ add a pure theoretical mode where we simulate every possibilty
 maybe a toggle "theoretical / simulated"
 and maybe different color schemes
 add preferences window "close rollWindow after rolling?"
-Remove duplicate logic in rollWindow
+\#Remove duplicate logic in rollWindow

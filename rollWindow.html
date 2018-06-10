@@ -143,49 +143,10 @@
 
         function submitForm(e){
             e.preventDefault();
+            var scope = angular.element(document.querySelector('[ng-controller="diceCtrl"]')).scope();
 
-            //TODO Remove duplication with angular
-            const numTrials = ~~document.querySelector('#numtrials').value;
-            const numDice =   ~~document.querySelector('#numdice').value;
-            const dieSize =   ~~document.querySelector('#diesize').value;
-            const addEach =   ~~document.querySelector('#addeach').value;
-            const addAll =    ~~document.querySelector('#addall').value;
-            let reRolls = [];
-
-            let reRollText = document.querySelector('#reroll').value;
-            reRolls = rerollTextToArray(reRollText);
-
-            //Determine theoretical min and max
-            let diePoss = []; //Possible die results
-            for(var i = 1; i <= dieSize; i++)
-            {
-                if(!reRolls.includes(i))
-                {
-                    diePoss.push(i);
-                }
-            }
-            var minPoss = diePoss[0];
-            var maxPoss = diePoss[diePoss.length-1];
-
-            minPoss += addEach;
-            maxPoss += addEach;
-
-            var therMin = minPoss * numDice + addAll;
-            var therMax = maxPoss * numDice + addAll;
-
-            const param = new Parameter(numTrials, numDice, dieSize, addEach, addAll, reRolls, therMin, therMax);
+            const param = new Parameter(scope.numTrials, scope.numDice, scope.dieSize, scope.addEach, scope.addAll, scope.reRolls, scope.therMin, scope.therMax);
             ipcRenderer.send('roll', param);
-
-            function rerollTextToArray(text)
-            {
-                let ret = [];
-                let nums = text.split(',');
-                for(var i = 0; i < nums.length; i++)
-                {
-                    nums[i] = ~~nums[i];
-                }
-                return nums;
-            }
         }
 
     </script>
