@@ -34,13 +34,49 @@
                 var angular = require('angular');
                 var app = angular.module('DiceRoller', []);
                 app.controller('diceCtrl', function($scope, $http){
+                    $scope.reRolls = []; //Converted to numbers
+                    $scope.reRollsText = ""; //The csv data from the textbox
+
                     $scope.numTrials = 100;
                     $scope.numDice = 1;
                     $scope.dieSize = 6;
                     $scope.addEach = 0;
                     $scope.addAll = 0;
+                    
+                    $scope.$watchGroup(['numTrials', 'numDice', 'dieSize', 'addEach', 'addAll', 'reRolls'], () => {
+                        //Determine theoretical min and max
+                        let diePoss = []; //Possible die results
+                        for(var i = 1; i <= $scope.dieSize; i++)
+                        {
+                            if(!$scope.reRolls.includes(i))
+                            {
+                                diePoss.push(i);
+                            }
+                        }
+                        var minPoss = diePoss[0];
+                        var maxPoss = diePoss[diePoss.length-1];
 
+                        minPoss += $scope.addEach;
+                        maxPoss += $scope.addEach;
 
+                        $scope.therMin = minPoss * $scope.numDice + $scope.addAll;
+                        $scope.therMax = maxPoss * $scope.numDice + $scope.addAll;
+                    });
+
+                    $scope.$watch('reRollsText', ()=>
+                    {
+                        let nums = $scope.reRollsText.split(',');
+                        for(var i = 0; i < nums.length; i++)
+                        {
+                            $scope.reRolls[i] = ~~$scope.reRolls[i];
+                        }
+                    });
+
+                    $scope.submitForm = ()=>
+                    {
+                        const param = new Parameter($scope.numTrials, $scope.numDice, $scope.dieSize, $scope.addEach, $scope.addAll, $scope.reRolls, $scope.therMin, $scope.therMax);
+                        ipcRenderer.send('roll', param);
+                    }
 
                 });
             </script>
@@ -74,17 +110,17 @@
                         <span class="tooltiptext">Enter in a comma-separated list of numbers like 1,2,5</span>
                 </span>
 
-                <input type="text" id="reroll" autofocus>
+                <input type="text" ng-model="reRollText" id="reroll" autofocus>
 
             </div>
 
-            <span>
-                You are rolling {{numDice}}d{{dieSize}}
+            <div>
+                You are rolling ({{numDice}}d{{dieSize}} + {{addEach}}) + {{addAll}}, resulting in a min of {{therMin}} and a max of {{therMax}}. 
                 <span id="spanNumDice">
 
                 </span>
-            </span>
-            <button class='btn waves-effect waves-light' type="submit">Roll!</button>
+            </div>
+            <button class='btn waves-effect waves-light' ng-click="submitForm" type="submit">Roll!</button>
             <button class='btn waves-effect waves-light' id="clear">Clear</button>
         </form>
     </div>
@@ -95,7 +131,6 @@
         const Parameter = require('./RollParams');
 
         const form = document.querySelector('form');
-        form.addEventListener('submit', submitForm);
 
         document.getElementById('clear').addEventListener('click', clear);
 
@@ -103,54 +138,6 @@
         {
             e.preventDefault();
             ipcRenderer.send('clear');
-        }
-
-        function submitForm(e){
-            e.preventDefault();
-
-            //TODO use angular binding instead
-            const numTrials = ~~document.querySelector('#numtrials').value;
-            const numDice =   ~~document.querySelector('#numdice').value;
-            const dieSize =   ~~document.querySelector('#diesize').value;
-            const addEach =   ~~document.querySelector('#addeach').value;
-            const addAll =    ~~document.querySelector('#addall').value;
-            let reRolls = [];
-
-            let reRollText = document.querySelector('#reroll').value;
-            reRolls = rerollTextToArray(reRollText);
-
-            //Determine theoretical min and max
-            let diePoss = []; //Possible die results
-            for(var i = 1; i <= dieSize; i++)
-            {
-                if(!reRolls.includes(i))
-                {
-                    diePoss.push(i);
-                }
-            }
-            var minPoss = diePoss[0];
-            var maxPoss = diePoss[diePoss.length-1];
-
-            minPoss += addEach;
-            maxPoss += addEach;
-
-            //TODO move this out sooner so we can have it for NLP
-            var therMin = minPoss * numDice + addAll;
-            var therMax = maxPoss * numDice + addAll;
-
-            const param = new Parameter(numTrials, numDice, dieSize, addEach, addAll, reRolls, therMin, therMax);
-            ipcRenderer.send('roll', param);
-        }
-
-        function rerollTextToArray(text)
-        {
-            let ret = [];
-            let nums = text.split(',');
-            for(var i = 0; i < nums.length; i++)
-            {
-                nums[i] = ~~nums[i];
-            }
-            return nums;
         }
 
     </script>
