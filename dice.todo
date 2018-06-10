@@ -19,9 +19,11 @@ clean up file structure
 \#Clean up UI
 add input validation
 change to typescript
-bind escape to close newDice
+\#bind escape to close newDice
 add a pure theoretical mode where we simulate every possibilty
 maybe a toggle "theoretical / simulated"
 and maybe different color schemes
 add preferences window "close rollWindow after rolling?"
 \#Remove duplicate logic in rollWindow
+Make graph responsive?
+add another die (like + nd8)

@@ -23,7 +23,6 @@ app.on('ready', () => {
         app.quit();
     })
 
-
     //Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     //Insert menu
@@ -45,12 +44,16 @@ function createRollWindow()
         slashes: true,
         pathname: path.join(__dirname, 'rollWindow.html')
     }));
+
+    const RollMenu = Menu.buildFromTemplate(RollMenuTemplate);
+    rollWindow.setMenu(RollMenu);
+
     //Handle garbage collection
     rollWindow.on('closed', ()=>
     {
         rollWindow = null;
-    }
-    )}
+    });
+}
 
 //Catch roll items
 ipcMain.on('roll', (e, param) => {
@@ -88,6 +91,22 @@ const mainMenuTemplate = [
                     app.quit();
                 },
                 accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q'
+            }
+        ]
+    }
+];
+
+// Create menu template
+const RollMenuTemplate = [
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'Close',
+                accelerator:  'esc',
+                click(){
+                    rollWindow.close();
+                }
             }
         ]
     }

@@ -130,9 +130,10 @@
     <script>
 
         const electron = require('electron');
-        const {ipcRenderer} = electron;
+        const {ipcRenderer, globalShortcut} = electron;
         const Parameter = require('./RollParams');
         const form = document.querySelector('form');
+
         form.addEventListener('submit', submitForm);
         document.getElementById('clear').addEventListener('click', clear);
 
