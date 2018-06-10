@@ -17,7 +17,7 @@
 
 
 
-and add line to graph
+and add line to graph (PDF)
 make the height scale as well, per the numTrials
 Add history to graphs
 Add history to commands
@@ -27,6 +27,7 @@ add multiply total, multiply each
 clean up file structure
 add input validation
 change to typescript
+add TSlint
 add a pure theoretical mode where we simulate every possibilty
 	maybe a toggle "theoretical / simulated"
 	and maybe different color schemes

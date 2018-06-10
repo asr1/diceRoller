@@ -128,6 +128,8 @@
             </div>
             <button class='btn waves-effect waves-light' type="submit">Roll!</button>
             <button class='btn waves-effect waves-light' id="clear">Clear</button>
+
+            <button id="test">test</button>
         </form>
     </div>
     <script>
@@ -135,10 +137,19 @@
         const electron = require('electron');
         const {ipcRenderer, globalShortcut} = electron;
         const Parameter = require('./RollParams');
+        const RollCount = require('./RollCount');
         const form = document.querySelector('form');
 
         form.addEventListener('submit', submitForm);
         document.getElementById('clear').addEventListener('click', clear);
+        document.getElementById('test').addEventListener('click', test);
+
+        function test(e)
+        {
+            e.preventDefault();
+            var scope = angular.element(document.querySelector('[ng-controller="diceCtrl"]')).scope();
+            rollTherDice(scope.dieSize, scope.numDice, scope.therMax);
+        }
 
         function clear(e)
         {
@@ -152,6 +163,40 @@
 
             const param = new Parameter(scope.numTrials, scope.numDice, scope.dieSize, scope.addEach, scope.addAll, scope.reRolls, scope.therMin, scope.therMax);
             ipcRenderer.send('roll', param);
+        }
+
+
+        function rollTherDice(numSides, numDice, max)
+        {
+            let dice = []; //Any array of all possible dice.
+            let sides = [];
+            let totalPos = numSides ** numDice;
+            let results = new RollCount(max)
+
+            for(let i = 1; i <= numSides; i++)
+            {
+                sides.push(i);
+            }
+            console.log(sides)
+            
+            for(let i = 0; i < numDice; i++)
+            {
+                dice.push(sides); 
+            }
+            
+            for(let i = 0; i < numSides; i++)
+            {
+                for(let j = 1; j < dice.length; j++)
+                {
+                    for(let k = 0; k < numSides; k++)
+                    {
+                        results.add(dice[0][i] + dice[j][k]);
+                    }
+                }
+            }
+            console.log( results.count)
+
+
         }
 
     </script>

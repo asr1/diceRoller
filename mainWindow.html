@@ -52,6 +52,8 @@
     const electron = require('electron');
     const {ipcRenderer} = electron;
     var d3 = require("d3");
+    const RollCount = require('./RollCount');
+
     let mostRecent = document.getElementsByClassName("chart");
 
     const sum = document.getElementById('sum');
@@ -143,13 +145,7 @@ function type(d) {
     function roll(param)
     {
         rolls = [];
-        rollscount = [];
-
-        //Prefill with 0s to prevent a bug where it can't differentiate between the number n and the nth element, which may move.
-        for(var i = 0; i < param.therMax; i++)
-        {
-            rollscount.push({"sum": i+1, "amount": 0})
-        }
+        rollscount = new RollCount(param.therMax);
 
         let rollSum = 0;
         for(var i = 0; i < param.numTrials; i++)
@@ -165,14 +161,14 @@ function type(d) {
             ul.appendChild(li);
 
             rolls.push(roll);
-            rollscount[roll-1].amount++; //arrays start at 0, sums start at 1
+            rollscount.add(roll);
             rollSum += roll;
         }
         sum.innerHTML = rollSum;
         avg.innerHTML = rollSum/param.numTrials;
         std.innerHTML = Math.round(rolls.stanDeviate() * 100) / 100;
-        trimArray(rollscount, param.therMin);
-        return rollscount;
+        trimArray(rollscount.count, param.therMin);
+        return rollscount.count;
         
       //numTrials, numDice, diceSize, addEach, addTotal, reRolls, therMin, therMax
     }
