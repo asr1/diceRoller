@@ -1,6 +1,6 @@
 \#Add theoretical max/min , 
-	average (generating a number between 3 and 150, averaging 30)
-add NLP: You are rolling 3(d6 + 1) + 3 100 times.
+\#	average (generating a number between 3 and 150, averaging 30)
+\#add NLP: You are rolling 3(d6 + 1) + 3 100 times.
 \#	^ use angular for this?
 \#		move thermax, therlow out of mainwindow logic
 \#			count rerolls in min
@@ -24,3 +24,4 @@ add a pure theoretical mode where we simulate every possibilty
 maybe a toggle "theoretical / simulated"
 and maybe different color schemes
 add preferences window "close rollWindow after rolling?"
+Remove duplicate logic in rollWindow
