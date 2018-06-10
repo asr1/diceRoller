@@ -5,27 +5,30 @@
 \#		move thermax, therlow out of mainwindow logic
 \#			count rerolls in min
 \#fix graph https://bost.ocks.org/mike/bar/3/
-	and add line to graph
 	\#space the graph out more (if we do 10d6 the numbers overlap)
 \#	Make the graph width a function of numDice --- No, a function of therlow and thermax. 
 \#		range should go from ~400 to ~600.
 \#	label axes
 \#push to github
+\#Clean up UI
+\#bind escape to close newDice
+\#Remove duplicate logic in rollWindow
+\#fix rerolls in NLP and math
+
+
+
+and add line to graph
 make the height scale as well, per the numTrials
 Add history to graphs
 Add history to commands
+add another die (like + nd8)
 add multiply total, multiply each
 	Add by  [constant/dropdown] and (d)[#]
 clean up file structure
-\#Clean up UI
 add input validation
 change to typescript
-\#bind escape to close newDice
 add a pure theoretical mode where we simulate every possibilty
 	maybe a toggle "theoretical / simulated"
 	and maybe different color schemes
 add preferences window "close rollWindow after rolling?"
-\#Remove duplicate logic in rollWindow
 Make graph responsive?
-add another die (like + nd8)
-fix rerolls in NLP
