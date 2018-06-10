@@ -62,8 +62,7 @@
     //Catch roll dice
     ipcRenderer.on('roll', (e, param) => {
         var values = roll(param);
-        console.log(values);
-        drawGraph(values);
+        drawGraph(values, getAdjustedWdith(param.therMin, param.therMax));
     });
 
     //Clear history
@@ -76,11 +75,16 @@
         avg.innerHTML = '';
     });
 
-    function drawGraph(data)
+    function getAdjustedWdith(min, max)
+    {
+        return 400+ 4 * max-min;
+    }
+
+    function drawGraph(data, adWidth)
     {
         // set the dimensions and margins of the graph
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 600 - margin.left - margin.right,
+        width =  adWidth - margin.left - margin.right,
         height = 150 - margin.top - margin.bottom;
         
         // set the ranges
@@ -147,11 +151,6 @@ function type(d) {
             rollscount.push({"sum": i+1, "amount": 0})
         }
 
-        console.log( "inital")
-        console.log(rollscount);
-       // console.log(param)
-       // console.log(param.numTrials);
-       // console.log(param.diceSize);
         let rollSum = 0;
         for(var i = 0; i < param.numTrials; i++)
         {
@@ -196,23 +195,19 @@ function type(d) {
         var sum = 0;
         for(var i = 0; i < numDice; i++)
         {
-          //  console.log("Rolling dice");
-         //   console.log(numDice + "d" + sizeOfDice)
-          //  console.log("+ " + addToEach)
             do{
                 var roll = rollDie(sizeOfDice)
             } while(reRolls.includes(roll));
             roll+= addToEach;
-         //   console.log(roll);
             sum += roll
         }
         return sum;
     }
 
     //Takes an array of {amount, sum} and removes removes the left values lower than the theoretical min 
-    function trimArray(arr, therLow)
+    function trimArray(arr, therMin)
     {
-        arr.splice(0,therLow-1);
+        arr.splice(0,therMin-1);
         return arr;
     }
 

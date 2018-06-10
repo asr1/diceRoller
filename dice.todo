@@ -7,8 +7,8 @@
 \#fix graph https://bost.ocks.org/mike/bar/3/
 	and add line to graph
 	\#space the graph out more (if we do 10d6 the numbers overlap)
-	Make the graph width a function of numDice --- No, a function of therlow and thermax. 
-		range should go from ~400 to ~600.
+\#	Make the graph width a function of numDice --- No, a function of therlow and thermax. 
+\#		range should go from ~400 to ~600.
 \#	label axes
 \#push to github
 Add history to graphs
